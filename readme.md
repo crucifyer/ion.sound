@@ -7,6 +7,7 @@ JavaScript plugin for playing sounds on user actions and page events.
 * forked from https://github.com/IonDen/ion.sound
 * Version: 3.0.8
 * nocache can be disabled.
+* supported audio check logic change.
 * sounds/ in the ion.sound.js directory will be the default path.
 
 ***

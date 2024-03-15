@@ -1,16 +1,14 @@
 ﻿/**
  * Ion.Sound
- * version 3.0.7 Build 89
- * © Denis Ineshin, 2016
- *
- * Project page:    http://ionden.com/a/plugins/ion.sound/en.html
- * GitHub page:     https://github.com/IonDen/ion.sound
+ * version 3.0.8
+ * GitHub page:     https://github.com/crucifyer/ion.sound
+ * Forked from:     https://github.com/IonDen/ion.sound
  *
  * Released under MIT licence:
  * http://ionden.com/a/plugins/licence-en.html
  */
 
-;(function (window, navigator, $, undefined) {
+(function (window, navigator, $, undefined) {
     "use strict";
 
     window.ion = window.ion || {};
@@ -78,19 +76,12 @@
      * - public methods
      */
 
-    var is_iOS = /iPad|iPhone|iPod/.test(navigator.appVersion),
-        sounds_num = 0,
-        settings = {},
+    var sounds_num = 0,
+        settings = {
+            supported: []
+        },
         sounds = {},
         i;
-
-
-
-    if (!settings.supported && is_iOS) {
-        settings.supported = ["mp3", "mp4", "aac"];
-    } else if (!settings.supported) {
-        settings.supported = ["mp3", "ogg", "mp4", "aac", "wav"];
-    }
 
     var createSound = function (obj) {
         var name = obj.alias || obj.name;
@@ -127,7 +118,7 @@
         }
     };
 
-    ion.sound.VERSION = "3.0.7";
+    ion.sound.VERSION = "3.0.8";
 
     ion.sound._method = function (method, name, options) {
         if (name) {
@@ -643,30 +634,11 @@
 
     var checkSupport = function () {
         var sound = new Audio(),
-            can_play_mp3 = sound.canPlayType('audio/mpeg'),
-            can_play_ogg = sound.canPlayType('audio/ogg'),
-            can_play_aac = sound.canPlayType('audio/mp4; codecs="mp4a.40.2"'),
             item, i;
 
-        for (i = 0; i < settings.supported.length; i++) {
-            item = settings.supported[i];
-
-            if (!can_play_mp3 && item === "mp3") {
-                settings.supported.splice(i, 1);
-            }
-
-            if (!can_play_ogg && item === "ogg") {
-                settings.supported.splice(i, 1);
-            }
-
-            if (!can_play_aac && item === "aac") {
-                settings.supported.splice(i, 1);
-            }
-
-            if (!can_play_aac && item === "mp4") {
-                settings.supported.splice(i, 1);
-            }
-        }
+        if(sound.canPlayType('audio/mpeg')) settings.supported.push("mp3");
+        if(sound.canPlayType('audio/ogg')) settings.supported.push("ogg");
+        if(sound.canPlayType('audio/mp4; codecs="mp4a.40.2"')) settings.supported.push("aac");
 
         sound = null;
     };
@@ -863,6 +835,7 @@
         this.multiplay = options.multiplay;
         this.volume = options.volume;
         this.preload = options.preload;
+        this.nocache = options.nocache;
         this.path = settings.path;
         this.start = options.start || 0;
         this.end = options.end || 0;
@@ -911,8 +884,7 @@
         },
 
         createUrl: function () {
-            var rand = new Date().valueOf();
-            this.url = this.path + encodeURIComponent(this.name) + "." + settings.supported[0] + "?" + rand;
+            this.url = this.path + encodeURIComponent(this.name) + "." + settings.supported[0] + (this.nocache ? "?" + (new Date().valueOf()) : "");
         },
 
         can_play_through: function () {
