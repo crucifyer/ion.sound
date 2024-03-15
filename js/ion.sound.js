@@ -104,9 +104,10 @@
     ion.sound = function (options) {
         extend(options, settings);
 
-        settings.path = settings.path || "";
+        settings.path = settings.path || (() => { return [...document.querySelectorAll('script[src*="ion.sound"]')].pop().src.replace(/[^\/]+$/, 'sounds/'); })();
         settings.volume = settings.volume || 1;
         settings.preload = settings.preload || false;
+        settings.nocache = settings.nocache || false;
         settings.multiplay = settings.multiplay || false;
         settings.loop = settings.loop || false;
         settings.sprite = settings.sprite || null;
@@ -254,8 +255,7 @@
         },
 
         createUrl: function () {
-            var no_cache = new Date().valueOf();
-            this.url = this.options.path + encodeURIComponent(this.options.name) + "." + this.options.supported[this.ext] + "?" + no_cache;
+            this.url = this.options.path + encodeURIComponent(this.options.name) + "." + this.options.supported[this.ext] + (this.options.nocache ? "?" + (new Date().valueOf()) : "");
         },
 
         load: function () {
