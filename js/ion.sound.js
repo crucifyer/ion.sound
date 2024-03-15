@@ -633,8 +633,7 @@
      */
 
     var checkSupport = function () {
-        var sound = new Audio(),
-            item, i;
+        var sound = new Audio();
 
         if(sound.canPlayType('audio/mpeg')) settings.supported.push("mp3");
         if(sound.canPlayType('audio/ogg')) settings.supported.push("ogg");
