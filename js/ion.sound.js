@@ -71,6 +71,23 @@
 
 
     /**
+     * Fallback for HTML5 audio
+     * - for not so modern browsers
+     */
+
+    var checkSupport = function () {
+        var sound = new Audio(), supported = [];
+
+        if(sound.canPlayType('audio/mpeg')) supported.push("mp3");
+        if(sound.canPlayType('audio/mp4; codecs="mp4a.40.2"')) supported.push("aac");
+        if(sound.canPlayType('audio/ogg')) supported.push("ogg");
+
+        sound = null;
+        return supported;
+    };
+
+
+    /**
      * CORE
      * - creating sounds collection
      * - public methods
@@ -78,7 +95,7 @@
 
     var sounds_num = 0,
         settings = {
-            supported: []
+            supported: checkSupport()
         },
         sounds = {},
         i;
@@ -625,23 +642,6 @@
         return;
     }
 
-
-
-    /**
-     * Fallback for HTML5 audio
-     * - for not so modern browsers
-     */
-
-    var checkSupport = function () {
-        var sound = new Audio();
-
-        if(sound.canPlayType('audio/mpeg')) settings.supported.push("mp3");
-        if(sound.canPlayType('audio/ogg')) settings.supported.push("ogg");
-        if(sound.canPlayType('audio/mp4; codecs="mp4a.40.2"')) settings.supported.push("aac");
-
-        sound = null;
-    };
-    checkSupport();
 
 
 
