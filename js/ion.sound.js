@@ -1,6 +1,6 @@
 ﻿/**
  * Ion.Sound
- * version 3.0.8
+ * version 3.0.9
  * GitHub page:     https://github.com/crucifyer/ion.sound
  * Forked from:     https://github.com/IonDen/ion.sound
  *
@@ -8,7 +8,7 @@
  * http://ionden.com/a/plugins/licence-en.html
  */
 
-(function (window, navigator, $, undefined) {
+(function (window, navigator, defaultPath, $, undefined) {
     "use strict";
 
     window.ion = window.ion || {};
@@ -112,7 +112,7 @@
     ion.sound = function (options) {
         extend(options, settings);
 
-        settings.path = settings.path || (() => { return [...document.querySelectorAll('script[src*="ion.sound"]')].pop().src.replace(/[^\/]+$/, 'sounds/'); })();
+        settings.path = settings.path || defaultPath;
         settings.volume = settings.volume || 1;
         settings.preload = settings.preload || false;
         settings.nocache = settings.nocache || false;
@@ -1049,4 +1049,4 @@
         }
     };
 
-} (window, navigator, window.jQuery || window.$));
+} (window, navigator, document.currentScript.src.replace(/[^\/]+$/, 'sounds/'), window.jQuery || window.$));
