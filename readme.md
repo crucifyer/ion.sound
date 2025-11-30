@@ -4,6 +4,11 @@ JavaScript plugin for playing sounds on user actions and page events.
 
 ***
 
+* Version: 3.0.9
+* default path logic change.
+
+***
+
 * forked from https://github.com/IonDen/ion.sound
 * Version: 3.0.8
 * nocache can be disabled.
